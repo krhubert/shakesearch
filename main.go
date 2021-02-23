@@ -55,7 +55,7 @@ func handleSearch(searchers ...Searcher) func(w http.ResponseWriter, r *http.Req
 			return
 		}
 
-		ch := make(chan []string)
+		ch := make(chan []string, len(searchers))
 		for _, s := range searchers {
 			go func(s Searcher) {
 				ch <- s.Search(query[0])
