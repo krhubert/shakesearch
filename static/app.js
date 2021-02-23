@@ -5,12 +5,16 @@ const Controller = {
     const data = Object.fromEntries(new FormData(form));
     const response = fetch(`/search?q=${data.query}`).then((response) => {
       response.json().then((results) => {
-        Controller.updateTable(results);
+        Controller.update(results || []);
+      }).catch((error) => {
+        Controller.update([])
       });
+    }).catch((error) => {
+      Controller.update([])
     });
   },
 
-  updateTable: (results) => {
+  update: (results) => {
     const search = document.getElementById('search');
     search.classList.remove('height-100');
     search.classList.add('search-transition');
@@ -21,6 +25,9 @@ const Controller = {
     searchcol.classList.add('is-8');
     searchcol.classList.add('search-column-transition');
 
+    const resultno = document.getElementById('result-number');
+    let suffix = results.length <= 1 ? '' : 's';
+    resultno.innerHTML = `${results.length} line` + suffix + ` found`;
     const table = document.getElementById('table-body');
     table.innerHTML = '';
     for (let result of results) {
