@@ -8,7 +8,6 @@ const Controller = {
         Controller.updateTable(results);
       });
     });
-    Controller.updateTable(["hehe"]);
   },
 
   updateTable: (results) => {
