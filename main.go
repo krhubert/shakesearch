@@ -182,7 +182,15 @@ func (m *SuffixArrayIgnoreCaseMatcher) Search(s string) []string {
 	idxs := m.suffixArray.FindAllIndex(reg, -1)
 	results := []string{}
 	for _, idx := range idxs {
-		results = append(results, m.completeWorks[idx[0]-250:idx[1]+250])
+		end := strings.Index(m.completeWorks[idx[1]:], "\n")
+		if end == -1 {
+			end = idx[1]
+		}
+		start := strings.LastIndex(m.completeWorks[:idx[0]], "\n")
+		if start == -1 {
+			start = idx[0]
+		}
+		results = append(results, m.completeWorks[start:idx[0]+end])
 	}
 	return results
 }
